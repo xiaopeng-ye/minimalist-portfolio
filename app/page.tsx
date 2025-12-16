@@ -44,7 +44,7 @@ export default function Home() {
   }, [mounted])
 
   return (
-    <div id="top" className="min-h-screen bg-background text-foreground relative">
+    <div id="top" className="min-h-screen text-foreground relative">
       <AnimatedThemeToggler className="absolute top-4 right-4 z-50" />
       <Navigation activeSection={activeSection} />
 
@@ -56,7 +56,7 @@ export default function Home() {
         <Footer />
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none"></div>
+      <div className="fixed bottom-0 left-0 right-0 h-24 bg-linear-to-t from-background via-background/80 to-transparent pointer-events-none"></div>
     </div>
   )
 }

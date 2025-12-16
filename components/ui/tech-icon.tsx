@@ -71,7 +71,7 @@ export function TechIcon({ name, iconType = "simple", iconSlug, className = "", 
 
     return (
       <div
-        className={`inline-flex items-center justify-center flex-shrink-0 ${className}`}
+        className={`inline-flex items-center justify-center shrink-0 ${className}`}
         style={{ width: size, height: size, minWidth: size, minHeight: size }}
         dangerouslySetInnerHTML={{ __html: coloredSvg }}
         aria-label={`${name} icon`}

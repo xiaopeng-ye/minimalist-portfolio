@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { Geist } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ParticlesBackground } from "@/components/ui/particles-background"
 import { getSiteMetadata } from "@/lib/portfolio-config"
 
 const geist = Geist({
@@ -42,6 +43,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ParticlesBackground />
           {children}
         </ThemeProvider>
       </body>
