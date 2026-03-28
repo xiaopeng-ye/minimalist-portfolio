@@ -1,0 +1,8 @@
+.agents
+.claude
+.next
+node_modules
+out
+pnpm-lock.yaml
+public
+tsconfig.tsbuildinfo

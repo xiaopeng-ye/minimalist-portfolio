@@ -1,140 +1,107 @@
-# Minimalist Portfolio Website
+# Minimalist Portfolio
 
-A clean, modern portfolio website built with Next.js and Tailwind CSS, featuring smooth animations and dark/light theme support.
+A refined portfolio starter built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
+It is designed for developers who want a fast, personal site with polished motion, strong typography, and a setup that is easy to customize.
 
-## ✨ Features
+## Overview
 
-- **Minimalist Design** - Clean typography with Geist font and strategic use of whitespace
-- **Responsive Layout** - Mobile-first design that works on all devices
-- **Animated Theme Toggle** - Seamless dark/light mode switching with smooth animations
-- **Smooth Animations** - Scroll-triggered animations and hover effects using Intersection Observer
-- **Modern Stack** - Built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4
-- **Component-Based Architecture** - Modular sections for easy customization
+- Clean single-page portfolio structure
+- Responsive layout for desktop and mobile
+- Animated light/dark theme toggle
+- Section-aware navigation and scroll progress feedback
+- Particle background and subtle motion details
+- Static-friendly setup for GitHub Pages deployment
 
-## 🚀 Built With
+## Tech Stack
 
-- [Next.js 16](https://nextjs.org/) - React framework with App Router
-- [React 19](https://react.dev/) - Latest React with improved performance
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS 4](https://tailwindcss.com/) - Utility-first CSS framework
-- [next-themes](https://github.com/pacocoursey/next-themes) - Theme management
-- [Lucide React](https://lucide.dev/) - Beautiful icons
-- [Geist Font](https://vercel.com/font) - Modern typography
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- `next-themes` for theme management
+- `motion` for UI animation
+- `web-haptics` for tactile feedback on supported devices
+- Lucide React and Simple Icons
 
-## 📦 Getting Started
+## Local Development
 
 ```bash
-# Clone the repository
 git clone https://github.com/xiaopeng-ye/minimalist-portfolio.git
-
-# Install dependencies (using pnpm)
+cd minimalist-portfolio
 pnpm install
-
-# Run development server
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
+Open `http://localhost:3000` in your browser.
 
-### Other Commands
+## Scripts
 
 ```bash
-# Build for production (generates static export)
+pnpm dev
 pnpm build
-
-# Start production server
 pnpm start
-
-# Run linting
 pnpm lint
+pnpm lint:fix
+pnpm format
+pnpm format:check
+pnpm typecheck
 ```
 
-## 🚀 Deployment
+## Project Structure
 
-This portfolio is configured for automatic deployment to GitHub Pages using GitHub Actions.
-
-### Automatic Deployment
-
-Every push to the `main` branch automatically triggers a build and deployment workflow.
-
-### Setup Steps
-
-1. **Enable GitHub Pages**:
-   - Go to your repository **Settings** > **Pages**
-   - Under "Build and deployment", select **Source: GitHub Actions**
-
-2. **Configure Custom Domain** (Optional):
-   - In the same Pages settings, add your custom domain
-   - Add a CNAME record in your DNS settings pointing to `<username>.github.io`
-
-3. **Push Your Changes**:
-   ```bash
-   git add .
-   git commit -m "Deploy to GitHub Pages"
-   git push origin main
-   ```
-
-4. **Monitor Deployment**:
-   - Check the **Actions** tab in your repository
-   - Once the workflow completes, your site will be live
-
-### Build Configuration
-
-The project uses Next.js static export (`output: 'export'`) which:
-- Generates static HTML/CSS/JS files in the `out` directory
-- Supports custom domains without basePath configuration
-- Requires `unoptimized: true` for images
-- Is fully compatible with GitHub Pages hosting
-
-## 🎨 Customization
-
-The portfolio is designed to be easily customizable:
-
-### Content
-- Update personal information in the following component files:
-  - `components/sections/intro.tsx` - Hero section
-  - `components/sections/work.tsx` - Work experience
-  - `components/sections/thoughts.tsx` - Blog posts or articles
-  - `components/sections/connect.tsx` - Contact information
-
-### Styling
-- Modify theme colors in `app/globals.css`
-- Customize Tailwind configuration in `tailwind.config.ts`
-- Adjust component styles in individual section files
-
-### Structure
-- Main page layout: `app/page.tsx`
-- Navigation: `components/sections/navigation.tsx`
-- Footer: `components/sections/footer.tsx`
-
-## 📁 Project Structure
-
-```
+```text
 minimalist-portfolio/
-├── app/                    # Next.js App Router
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
+├── app/                     # App Router entry, metadata, global styles
 ├── components/
-│   ├── sections/          # Page sections
-│   │   ├── navigation.tsx
-│   │   ├── intro.tsx
-│   │   ├── work.tsx
-│   │   ├── thoughts.tsx
-│   │   ├── connect.tsx
-│   │   └── footer.tsx
-│   └── ui/                # Reusable UI components
-└── public/                # Static assets
+│   ├── sections/           # Intro, work, thoughts, connect, footer
+│   └── ui/                 # Reusable UI pieces and visual effects
+├── lib/                    # Portfolio content and helpers
+├── public/                 # Static assets
+└── types/                  # Shared TypeScript types
 ```
 
-## 🛠️ Tech Stack Details
+## Customize Your Portfolio
 
-- **Package Manager**: pnpm 10.19.0
-- **Node Version**: 22+ recommended
-- **Styling**: Tailwind CSS 4 with PostCSS
-- **Animations**: CSS animations with tw-animate-css
-- **Icons**: Lucide React & Simple Icons
+Most personal content lives in `lib/portfolio-config.ts`.
 
-## 📄 License
+Update these areas to make the site your own:
 
-Open source and available under the [MIT License](LICENSE).
+- `personal`: name, role, bio, location, availability
+- `skills`: tech stack and icon mappings
+- `experience`: timeline entries and descriptions
+- `contact`: email address
+- `social`: external links
+- `siteMetadata`: SEO title, description, and site URL
+
+You can also adjust layout and presentation here:
+
+- `app/page.tsx` for page composition
+- `app/globals.css` for theme tokens and global styling
+- `components/sections/*.tsx` for section-specific content and layout
+
+## Features Worth Noting
+
+- Theme switching uses `next-themes` with an animated transition
+- Scroll tracking updates navigation state as sections enter view
+- Metadata, manifest, and Open Graph assets are configured in `app/layout.tsx` and `app/opengraph-image.tsx`
+- The portfolio content is statically embedded at build time from `lib/portfolio-config.ts`
+
+## Deployment
+
+This project is set up well for static hosting and can be deployed to GitHub Pages.
+
+Typical flow:
+
+1. Enable GitHub Pages with **GitHub Actions** as the source.
+2. Push changes to your default branch.
+3. Monitor the workflow in the repository's **Actions** tab.
+
+If you use a custom domain, update your DNS records and set the domain in GitHub Pages settings.
+
+## Live Site
+
+- Portfolio: `https://xiaopengye.kkcloud.org`
+
+## License
+
+Released under the [MIT License](LICENSE).

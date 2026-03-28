@@ -137,6 +137,31 @@
       transform: translateY(0);
     }
   }
+
+  .animate-rainbow {
+    animation: rainbow 2s linear infinite;
+  }
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .animate-rainbow {
+      animation: none;
+    }
+  }
 }
 
 ::view-transition-old(root),

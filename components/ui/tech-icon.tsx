@@ -1,9 +1,10 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
-import * as SimpleIcons from "simple-icons"
 import Image from "next/image"
+import { SIMPLE_ICON_REGISTRY } from "@/lib/icon-registry"
+
+const DASHBOARD_LIGHT_VARIANTS = new Set(["ansible", "aws", "nextjs", "openai"])
 
 interface TechIconProps {
   name: string
@@ -11,96 +12,147 @@ interface TechIconProps {
   iconSlug?: string
   className?: string
   size?: number
+  loading?: "lazy" | "eager"
 }
 
-/**
- * TechIcon Component
- * Displays technology icons from Simple Icons or Dashboard Icons CDN
- * Supports both light and dark themes
- */
-export function TechIcon({ name, iconType = "simple", iconSlug, className = "", size = 14 }: TechIconProps) {
+// Dashboard icons are theme-aware (light/dark variant).
+// Isolated in its own component so only dashboard icons subscribe to theme changes.
+function DashboardIconRenderer({
+  slug,
+  name,
+  size,
+  className = "",
+  loading = "lazy",
+}: {
+  slug: string
+  name: string
+  size: number
+  className?: string
+  loading?: "lazy" | "eager"
+}) {
   const { resolvedTheme } = useTheme()
-  // If no iconSlug provided, try to derive it from name
-  const slug = iconSlug || name.toLowerCase().replace(/\s+/g, "").replace(/\./g, "dot")
+  const shouldUseLightVariant =
+    resolvedTheme === "dark" && DASHBOARD_LIGHT_VARIANTS.has(slug)
+  const dashboardSlug = shouldUseLightVariant ? `${slug}-light` : slug
+  const dashboardUrl = `/icons/dashboard/${dashboardSlug}.svg`
+  const fallbackUrl = `/icons/dashboard/${slug}.svg`
 
-  if (iconType === "dashboard") {
-    // Use Dashboard Icons CDN
-    // In dark mode, try to use the -light variant if available
-    const dashboardSlug = resolvedTheme === "dark" ? `${slug}-light` : slug
-    const dashboardUrl = `https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/${dashboardSlug}.svg`
-    const fallbackUrl = `https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/${slug}.svg`
+  return (
+    <Image
+      src={dashboardUrl}
+      alt={`${name} icon`}
+      width={size}
+      height={size}
+      loading={loading}
+      className={`inline-block object-contain ${className}`}
+      style={{ width: size, height: size, minWidth: size, minHeight: size }}
+      suppressHydrationWarning
+      onError={(e) => {
+        if (shouldUseLightVariant && e.currentTarget.src === dashboardUrl) {
+          e.currentTarget.src = fallbackUrl
+        } else {
+          e.currentTarget.style.display = "none"
+        }
+      }}
+    />
+  )
+}
 
-    return (
-      <Image
-        src={dashboardUrl}
-        alt={`${name} icon`}
-        width={size}
-        height={size}
-        className={`inline-block object-contain ${className}`}
-        style={{ width: size, height: size, minWidth: size, minHeight: size }}
-        suppressHydrationWarning
-        onError={(e) => {
-          // Fallback: try the regular version if -light version doesn't exist
-          if (e.currentTarget.src === dashboardUrl && resolvedTheme === "dark") {
-            e.currentTarget.src = fallbackUrl
-          } else {
-            // If both fail, hide the image
-            e.currentTarget.style.display = "none"
-          }
-        }}
-      />
-    )
-  }
+// Simple icons use fixed brand colors — no theme subscription needed.
+function SimpleIconRenderer({
+  slug,
+  name,
+  size,
+  className = "",
+}: {
+  slug: string
+  name: string
+  size: number
+  className?: string
+}) {
+  const icon = SIMPLE_ICON_REGISTRY[slug]
 
-  // Use Simple Icons
-  try {
-    // Get icon from simple-icons package
-    const iconKey = `si${slug.charAt(0).toUpperCase()}${slug.slice(1)}` as keyof typeof SimpleIcons
-    const icon = SimpleIcons[iconKey]
-
-    if (!icon || !("svg" in icon)) {
-      // Icon not found, return null
-      return null
-    }
-
-    // Apply brand color to SVG
-    const coloredSvg = icon.svg.replace(
-      /<svg/,
-      `<svg fill="#${icon.hex}" style="width: ${size}px; height: ${size}px;"`
-    )
-
-    return (
-      <div
-        className={`inline-flex items-center justify-center shrink-0 ${className}`}
-        style={{ width: size, height: size, minWidth: size, minHeight: size }}
-        dangerouslySetInnerHTML={{ __html: coloredSvg }}
-        aria-label={`${name} icon`}
-        role="img"
-      />
-    )
-  } catch (error) {
-    // If icon not found, return null
-    console.warn(`Icon not found for: ${name} (slug: ${slug})`)
+  if (!icon) {
     return null
   }
+
+  const coloredSvg = icon.svg.replace(
+    /<svg/,
+    `<svg fill="#${icon.hex}" style="width: ${size}px; height: ${size}px;"`
+  )
+
+  return (
+    <div
+      className={`inline-flex items-center justify-center shrink-0 ${className}`}
+      style={{ width: size, height: size, minWidth: size, minHeight: size }}
+      dangerouslySetInnerHTML={{ __html: coloredSvg }}
+      aria-label={`${name} icon`}
+      role="img"
+    />
+  )
 }
 
-/**
- * TechBadge Component
- * Displays a technology badge with icon and name
- */
+export function TechIcon({
+  name,
+  iconType = "simple",
+  iconSlug,
+  className = "",
+  size = 14,
+  loading = "lazy",
+}: TechIconProps) {
+  const slug =
+    iconSlug || name.toLowerCase().replace(/\s+/g, "").replace(/\./g, "dot")
+
+  if (iconType === "dashboard") {
+    return (
+      <DashboardIconRenderer
+        slug={slug}
+        name={name}
+        size={size}
+        className={className}
+        loading={loading}
+      />
+    )
+  }
+
+  return (
+    <SimpleIconRenderer
+      slug={slug}
+      name={name}
+      size={size}
+      className={className}
+    />
+  )
+}
+
 interface TechBadgeProps {
   name: string
   iconType?: "simple" | "dashboard"
   iconSlug?: string
   className?: string
   showIcon?: boolean
+  loading?: "lazy" | "eager"
 }
 
-export function TechBadge({ name, iconType, iconSlug, className = "", showIcon = true }: TechBadgeProps) {
+export function TechBadge({
+  name,
+  iconType,
+  iconSlug,
+  className = "",
+  showIcon = true,
+  loading = "lazy",
+}: TechBadgeProps) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
-      {showIcon && <TechIcon name={name} iconType={iconType} iconSlug={iconSlug} size={14} />}
+      {showIcon && (
+        <TechIcon
+          name={name}
+          iconType={iconType}
+          iconSlug={iconSlug}
+          size={14}
+          loading={loading}
+        />
+      )}
       <span>{name}</span>
     </span>
   )

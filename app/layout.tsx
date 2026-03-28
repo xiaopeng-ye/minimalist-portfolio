@@ -4,6 +4,7 @@ import { Geist } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ParticlesBackground } from "@/components/ui/particles-background"
+import { ScrollProgress } from "@/components/ui/scroll-progress"
 import { getSiteMetadata } from "@/lib/portfolio-config"
 
 const geist = Geist({
@@ -15,6 +16,7 @@ const geist = Geist({
 const siteMetadata = getSiteMetadata()
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteMetadata.siteUrl),
   title: siteMetadata.title,
   description: siteMetadata.description,
   applicationName: siteMetadata.applicationName,
@@ -23,10 +25,23 @@ export const metadata: Metadata = {
     icon: "/icon1.png",
     apple: "/apple-icon.png",
   },
+  openGraph: {
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+  },
 }
 
 export const viewport: Viewport = {
-  themeColor: siteMetadata.themeColor,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
 }
 
 export default function RootLayout({
@@ -35,7 +50,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} scroll-smooth`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geist.variable} scroll-smooth`}
+      suppressHydrationWarning
+    >
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
@@ -43,6 +62,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ScrollProgress />
           <ParticlesBackground />
           {children}
         </ThemeProvider>

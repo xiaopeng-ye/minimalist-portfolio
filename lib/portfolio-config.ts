@@ -1,4 +1,4 @@
-import type { PortfolioConfig } from "@/types/portfolio";
+import type { PortfolioConfig } from "@/types/portfolio"
 
 // Portfolio configuration - imported at build time
 // This is a static export, so the config is embedded into the bundle
@@ -9,12 +9,12 @@ const portfolioConfig: PortfolioConfig = {
     lastName: "Ye",
     title: "Fullstack Developer",
     bio: "Fullstack Developer crafting digital experiences at the intersection of design, technology, and user experience.",
-    location: "Spain",
+    location: "Spain / Luxembourg",
     availability: "Available for work",
     currentRole: {
       title: "Full-Stack Developer",
-      company: "Huawei",
-      startYear: 2023,
+      company: "Wixdom",
+      startYear: 2026,
     },
   },
   skills: [
@@ -40,14 +40,15 @@ const portfolioConfig: PortfolioConfig = {
   ],
   experience: [
     {
-      year: "2023 - Present",
+      year: "2023 - 2026",
       role: "Cloud Engineer & Full-Stack Developer",
       company: "Huawei",
-      description: "Architected full-stack AI solutions using RAG systems with LLMs and Vector Databases, reducing information retrieval time by 70%. Engineered complete LLMOps lifecycle with Docker and Kubernetes, implementing monitoring with Prometheus, Grafana, and Langfuse. Designed secure hybrid cloud architectures and automated CI/CD pipelines for cloud-native deployments.",
+      description:
+        "Architected full-stack AI solutions using RAG systems with LLMs and Vector Databases, reducing information retrieval time by 70%. Engineered complete LLMOps lifecycle with Docker and Kubernetes, implementing monitoring with Prometheus, Grafana, and Langfuse. Designed secure hybrid cloud architectures and automated CI/CD pipelines for cloud-native deployments.",
       technologies: [
         { name: "Python", iconType: "dashboard", iconSlug: "python" },
         { name: "RAG", iconType: "dashboard", iconSlug: "openai" },
-        { name: "LangChain", iconType: "dashboard", iconSlug: "langchain" },
+        { name: "LangChain", iconType: "simple", iconSlug: "langchain" },
         { name: "Docker", iconType: "dashboard", iconSlug: "docker" },
         { name: "Kubernetes", iconType: "dashboard", iconSlug: "kubernetes" },
         { name: "Prometheus", iconType: "dashboard", iconSlug: "prometheus" },
@@ -58,7 +59,8 @@ const portfolioConfig: PortfolioConfig = {
       year: "2022 - 2023",
       role: "Frontend Developer",
       company: "Collisio Technologies",
-      description: "Led frontend development of a real estate crowdfunding platform with React, Redux, and Tailwind CSS, serving hundreds of active investors. Engineered interactive dashboards using D3.js to visualize complex financial data. Established CI/CD pipeline for frontend application, improving development velocity.",
+      description:
+        "Led frontend development of a real estate crowdfunding platform with React, Redux, and Tailwind CSS, serving hundreds of active investors. Engineered interactive dashboards using D3.js to visualize complex financial data. Established CI/CD pipeline for frontend application, improving development velocity.",
       technologies: [
         { name: "React", iconType: "dashboard", iconSlug: "reactjs" },
         { name: "TypeScript", iconType: "dashboard", iconSlug: "typescript" },
@@ -72,7 +74,8 @@ const portfolioConfig: PortfolioConfig = {
       year: "2021",
       role: "Data Scientist Intern",
       company: "Inetum",
-      description: "Conducted exploratory data analysis and trained NLP models for customer feedback analysis. Visualized data insights using Python libraries such as Pandas and Matplotlib.",
+      description:
+        "Conducted exploratory data analysis and trained NLP models for customer feedback analysis. Visualized data insights using Python libraries such as Pandas and Matplotlib.",
       technologies: [
         { name: "Python", iconType: "dashboard", iconSlug: "python" },
         { name: "Pandas", iconType: "dashboard", iconSlug: "python" },
@@ -83,9 +86,14 @@ const portfolioConfig: PortfolioConfig = {
       year: "2021",
       role: "Research Intern",
       company: "IMDEA Software Institute",
-      description: "Research internship focused on software engineering and programming languages.",
+      description:
+        "Research internship focused on software engineering and programming languages.",
       technologies: [
-        { name: "Research", iconType: "simple", iconSlug: "googlesearchconsole" },
+        {
+          name: "Research",
+          iconType: "simple",
+          iconSlug: "googlesearchconsole",
+        },
       ],
     },
   ],
@@ -137,48 +145,50 @@ const portfolioConfig: PortfolioConfig = {
   ],
   siteMetadata: {
     title: "Xiaopeng Ye - Full-Stack Developer",
-    description: "A versatile Software Engineer with a passion for building data-driven solutions, bridging the gap from cloud infrastructure to sophisticated frontend applications.",
+    description:
+      "A versatile Software Engineer with a passion for building data-driven solutions, bridging the gap from cloud infrastructure to sophisticated frontend applications.",
     applicationName: "Xiaopeng Ye's Portfolio",
     themeColor: "#ffffff",
     backgroundColor: "#ffffff",
+    siteUrl: "https://xiaopengye.kkcloud.org",
   },
-};
+}
 
 /**
  * Get portfolio configuration
  * Since this is a static export, the config is embedded into the bundle
  */
 export function getPortfolioConfig(): PortfolioConfig {
-  return portfolioConfig;
+  return portfolioConfig
 }
 
 /**
  * Get specific section from portfolio config
  */
 export function getPersonalInfo() {
-  return getPortfolioConfig().personal;
+  return getPortfolioConfig().personal
 }
 
 export function getSkills() {
-  return getPortfolioConfig().skills;
+  return getPortfolioConfig().skills
 }
 
 export function getExperience() {
-  return getPortfolioConfig().experience;
+  return getPortfolioConfig().experience
 }
 
 export function getThoughts() {
-  return getPortfolioConfig().thoughts;
+  return getPortfolioConfig().thoughts ?? []
 }
 
 export function getContact() {
-  return getPortfolioConfig().contact;
+  return getPortfolioConfig().contact
 }
 
 export function getSocial() {
-  return getPortfolioConfig().social;
+  return getPortfolioConfig().social
 }
 
 export function getSiteMetadata() {
-  return getPortfolioConfig().siteMetadata;
+  return getPortfolioConfig().siteMetadata
 }
