@@ -96,6 +96,21 @@ Typical flow:
 2. Push changes to your default branch.
 3. Monitor the workflow in the repository's **Actions** tab.
 
+### PostHog on GitHub Pages
+
+This project uses `posthog-js` via `instrumentation-client.ts`, which works with the App Router and static export builds.
+
+For privacy-friendly behavior on a static site, analytics stay disabled by default and only start after the visitor accepts the consent banner.
+
+Add these repository secrets before deploying:
+
+- `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`
+- `NEXT_PUBLIC_POSTHOG_HOST`
+
+For local development, copy `.env.example` to `.env.local` and fill in your own values.
+
+Note: because this is a static site and PostHog runs in the browser, `NEXT_PUBLIC_*` values are embedded into the built client bundle. Use a PostHog project token intended for client-side analytics.
+
 If you use a custom domain, update your DNS records and set the domain in GitHub Pages settings.
 
 ## Live Site

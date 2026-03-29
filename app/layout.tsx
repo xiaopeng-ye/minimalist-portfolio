@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Geist } from "next/font/google"
 import "./globals.css"
+import { PostHogConsent } from "@/components/posthog-consent"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ParticlesBackground } from "@/components/ui/particles-background"
 import { ScrollProgress } from "@/components/ui/scroll-progress"
@@ -65,6 +66,7 @@ export default function RootLayout({
           <ScrollProgress />
           <ParticlesBackground />
           {children}
+          <PostHogConsent />
         </ThemeProvider>
       </body>
     </html>
