@@ -20,11 +20,11 @@ export function Work() {
           {experience.map((job) => (
             <div
               key={`${job.company}-${job.year}`}
-              className="group grid sm:grid-cols-12 gap-4 sm:gap-8 py-6 sm:py-8 border-b border-border/50 hover:border-border transition-colors duration-500"
+              className="group grid sm:grid-cols-12 gap-4 sm:gap-8 py-6 sm:py-8 border-b border-border/50 hover:border-border transition-colors duration-200"
             >
               {/* On mobile: year is shown inline with role/company */}
               <div className="hidden sm:block sm:col-span-2">
-                <div className="text-sm font-mono sm:text-2xl sm:font-light text-muted-foreground group-hover:text-foreground transition-colors duration-500">
+                <div className="text-sm font-mono sm:text-2xl sm:font-light text-muted-foreground group-hover:text-foreground transition-colors duration-200">
                   {job.year}
                 </div>
               </div>
@@ -50,7 +50,7 @@ export function Work() {
                 {job.technologies.map((tech) => (
                   <span
                     key={tech.name}
-                    className="px-2 py-1 text-xs text-muted-foreground rounded group-hover:border-muted-foreground/50 transition-colors duration-500"
+                    className="px-2 py-1 text-xs text-muted-foreground rounded group-hover:border-muted-foreground/50 transition-colors duration-200"
                   >
                     <TechBadge
                       name={tech.name}

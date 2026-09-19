@@ -1,7 +1,21 @@
 "use client"
 
+import type { MouseEvent } from "react"
 import { getThoughts } from "@/lib/portfolio-config"
 import { useWebHaptics } from "web-haptics/react"
+
+// Smooth-scroll only for user-initiated navigation. Putting `scroll-smooth`
+// on <html> would also animate browser scroll restoration on reload.
+function scrollToSection(event: MouseEvent<HTMLAnchorElement>, id: string) {
+  const target = document.getElementById(id)
+  if (!target) return
+  event.preventDefault()
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches
+  target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" })
+  history.pushState(null, "", `#${id}`)
+}
 
 interface NavigationProps {
   activeSection: string
@@ -28,8 +42,11 @@ export function Navigation({ activeSection }: NavigationProps) {
             <a
               key={section}
               href={`#${section}`}
-              onClick={() => haptic.trigger("selection")}
-              className={`w-2 h-8 rounded-full transition-[background-color] duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+              onClick={(event) => {
+                haptic.trigger("selection")
+                scrollToSection(event, section)
+              }}
+              className={`w-2 h-8 rounded-full transition-[background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 activeSection === section
                   ? "bg-foreground"
                   : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
@@ -47,8 +64,11 @@ export function Navigation({ activeSection }: NavigationProps) {
             <a
               key={section}
               href={`#${section}`}
-              onClick={() => haptic.trigger("selection")}
-              className={`px-3 py-1.5 text-xs font-mono tracking-wider rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              onClick={(event) => {
+                haptic.trigger("selection")
+                scrollToSection(event, section)
+              }}
+              className={`px-3 py-1.5 text-xs font-mono tracking-wider rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                 activeSection === section
                   ? "bg-foreground text-background"
                   : "text-muted-foreground hover:text-foreground"

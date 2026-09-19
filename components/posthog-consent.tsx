@@ -56,7 +56,7 @@ export function PostHogConsent() {
   }
 
   return (
-    <aside className="fixed inset-x-4 bottom-4 z-50 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md">
+    <aside className="fixed inset-x-4 bottom-4 z-50 animate-slide-in sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md">
       <div className="relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-background/90 p-5 shadow-[0_24px_80px_-32px_rgba(0,0,0,0.45)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/75">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(127,127,127,0.16),transparent_45%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_45%)]" />
         <div className="relative space-y-4">
@@ -79,7 +79,7 @@ export function PostHogConsent() {
             <button
               type="button"
               onClick={() => applyConsent("accepted", true)}
-              className="inline-flex min-h-11 items-center justify-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="inline-flex min-h-11 items-center justify-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               Accept analytics
             </button>

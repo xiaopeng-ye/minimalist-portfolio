@@ -3,7 +3,7 @@ import { getThoughts } from "@/lib/portfolio-config"
 // Static JSX hoisted outside component — never changes between renders
 const ArrowIcon = (
   <svg
-    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+    className="w-4 h-4 transform motion-safe:group-hover:translate-x-1 transition-transform duration-300"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -34,7 +34,7 @@ export function Thoughts() {
           {thoughts.map((post) => (
             <article
               key={post.title}
-              className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-[border-color,box-shadow] duration-500 hover:shadow-lg"
+              className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-[border-color,box-shadow] duration-200 hover:shadow-lg"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-xs text-muted-foreground font-mono">

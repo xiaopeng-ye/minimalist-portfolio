@@ -199,7 +199,10 @@ export const AnimatedThemeToggler = ({
       "(prefers-reduced-motion: reduce)"
     ).matches
 
-    if (typeof document.startViewTransition !== "function" || prefersReducedMotion) {
+    if (
+      typeof document.startViewTransition !== "function" ||
+      prefersReducedMotion
+    ) {
       applyTheme()
       return
     }

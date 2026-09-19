@@ -113,6 +113,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Motion tokens. Strong curves so deliberate motion reads as deliberate;
+     these also back Tailwind's `ease-out` / `ease-in-out` utilities. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @layer base {
@@ -126,14 +131,48 @@
 }
 
 @layer utilities {
+  /* Page-load entrance: opacity only, so nothing moves relative to the fixed
+     chrome (theme toggle, nav dots) on refresh. */
+  .animate-fade-in {
+    animation: fade-in 0.4s var(--ease-out) forwards;
+  }
+
+  /* Scroll reveal for sections entering the viewport. */
   .animate-fade-in-up {
-    animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fade-in-up 0.5s var(--ease-out) forwards;
+  }
+
+  /* Entrance for fixed overlays that mount after hydration (consent banner). */
+  .animate-slide-in {
+    animation: slide-in 0.2s var(--ease-out) forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes fade-in-up {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
     }
 
     to {
@@ -156,10 +195,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-in-up {
-      animation: none;
-      opacity: 1;
-      transform: none;
+    /* Keep the opacity feedback, drop the movement. */
+    .animate-fade-in-up,
+    .animate-slide-in {
+      animation: fade-in 0.2s var(--ease-out) forwards;
     }
 
     .animate-rainbow {

@@ -25,7 +25,7 @@ export function Intro() {
   return (
     <header
       id="intro"
-      className="min-h-screen flex items-center animate-fade-in-up pt-16 md:pt-0"
+      className="min-h-screen flex items-center animate-fade-in pt-16 md:pt-0"
     >
       <div className="grid md:grid-cols-5 gap-8 sm:gap-12 lg:gap-16 w-full">
         <div className="md:col-span-3 space-y-6 sm:space-y-8">
@@ -49,7 +49,7 @@ export function Intro() {
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <div
-                    className="w-2 h-2 bg-green-400 rounded-full animate-pulse relative z-10"
+                    className="w-2 h-2 bg-green-400 rounded-full motion-safe:animate-pulse relative z-10"
                     style={{
                       boxShadow:
                         "0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80, 0 0 40px #22c55e",
@@ -62,7 +62,7 @@ export function Intro() {
             </div>
 
             <div className="pt-4 flex items-center md:justify-start justify-center">
-              <StarOnGithub href="https://github.com/xiaopeng-ye/minimalist-portfolio" />
+              <StarOnGithub href="https://github.com/xiaopeng-ye/" />
             </div>
           </div>
         </div>

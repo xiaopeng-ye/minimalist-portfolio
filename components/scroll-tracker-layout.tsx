@@ -24,7 +24,10 @@ export function ScrollTrackerLayout({
           }
         })
       },
-      { threshold: 0.3, rootMargin: "0px 0px -20% 0px" }
+      // Reveal as soon as a sliver of the section clears the bottom 10% of the
+      // viewport. A ratio threshold would scale with section height and leave
+      // most of a small screen blank on tall sections before firing.
+      { threshold: 0.05, rootMargin: "0px 0px -10% 0px" }
     )
 
     // Query sections by id after mount — works with RSC-rendered HTML
