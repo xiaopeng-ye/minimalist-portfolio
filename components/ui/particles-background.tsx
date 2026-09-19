@@ -1,25 +1,15 @@
 "use client"
 
-import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
+import { useTheme } from "@/components/theme-provider"
 import { Particles } from "./particles"
 
 export function ParticlesBackground() {
   const { resolvedTheme } = useTheme()
-  const [color, setColor] = useState("#000000")
-  const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (mounted) {
-      setColor(resolvedTheme === "dark" ? "#ffffff" : "#000000")
-    }
-  }, [resolvedTheme, mounted])
-
-  if (!mounted) {
+  // resolvedTheme is undefined on the server and during hydration; rendering
+  // nothing until it resolves avoids a first paint (and canvas init) with the
+  // wrong particle color that would then re-initialize a frame later.
+  if (!resolvedTheme) {
     return null
   }
 
@@ -29,7 +19,7 @@ export function ParticlesBackground() {
       quantity={100}
       ease={80}
       size={0.5}
-      color={color}
+      color={resolvedTheme === "dark" ? "#ffffff" : "#000000"}
       refresh
     />
   )

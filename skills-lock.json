@@ -1,30 +1,17 @@
 {
   "version": 1,
   "skills": {
-    "adapt": {
-      "source": "pbakaus/impeccable",
+    "improve-animations": {
+      "source": "emilkowalski/skills",
       "sourceType": "github",
-      "computedHash": "fb7cca7602be381b7b486e731fdcd480335cbb9b925e1911276f5bb9352c6b2f"
+      "skillPath": "skills/improve-animations/SKILL.md",
+      "computedHash": "524ea241e41d58bbdd8e288700fe24f5725e2a2f3ae7186ad7cebf9055058356"
     },
-    "frontend-design": {
-      "source": "anthropics/skills",
+    "next-dev-loop": {
+      "source": "vercel/next.js",
       "sourceType": "github",
-      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
-    },
-    "next-best-practices": {
-      "source": "vercel-labs/next-skills",
-      "sourceType": "github",
-      "computedHash": "515ba75178bd44875812d9a560bdf14651f86709f89cf1d4f209638e879807f3"
-    },
-    "nextjs": {
-      "source": "vercel-labs/vercel-plugin",
-      "sourceType": "github",
-      "computedHash": "228adbce76c9036e79d1177e5b9fe05062569b8aea7effb89152f83f6d4603b2"
-    },
-    "vercel-composition-patterns": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "computedHash": "f98931159fa9c7fed043bcd18a891a46dcf89ababa38df13a4c5b7b30dc0ce07"
+      "skillPath": "skills/next-dev-loop/SKILL.md",
+      "computedHash": "18d8a8f48b8dc50e084de85afe6bd517a178c83684d45c1ebd16cf396428bedf"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",

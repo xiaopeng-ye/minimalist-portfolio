@@ -15,16 +15,16 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
+    "@wrksz/themes": "^1.2.0",
     "autoprefixer": "^10.4.23",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.555.0",
     "motion": "^12.38.0",
-    "next": "16.2.1",
-    "next-themes": "latest",
+    "next": "16.3.5",
     "posthog-js": "^1.364.1",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "simple-icons": "^15.22.0",
     "tailwind-merge": "^2.6.0",
     "web-haptics": "^0.0.6"
@@ -32,10 +32,10 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^22.19.3",
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.3.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "postcss": "^8.5.6",
@@ -53,8 +53,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "19.2.14",
-      "@types/react-dom": "19.2.3"
+      "@types/react": "19.3.0",
+      "@types/react-dom": "19.3.0"
     }
   },
   "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8"

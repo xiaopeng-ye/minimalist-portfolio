@@ -1,7 +1,5 @@
 "use client"
 
-import { useTheme } from "next-themes"
-import Image from "next/image"
 import { SIMPLE_ICON_REGISTRY } from "@/lib/icon-registry"
 
 const DASHBOARD_LIGHT_VARIANTS = new Set(["ansible", "aws", "nextjs", "openai"])
@@ -15,8 +13,45 @@ interface TechIconProps {
   loading?: "lazy" | "eager"
 }
 
-// Dashboard icons are theme-aware (light/dark variant).
-// Isolated in its own component so only dashboard icons subscribe to theme changes.
+function DashboardImg({
+  src,
+  name,
+  size,
+  className,
+  loading,
+}: {
+  src: string
+  name: string
+  size: number
+  className: string
+  loading: "lazy" | "eager"
+}) {
+  // Plain <img>: the site is a static export with `images.unoptimized`, so
+  // next/image adds nothing for these tiny SVGs. It also avoids next/image's
+  // LCP warning, which keys images by src and misattributes the eager intro
+  // icon to a lazy instance of the same src rendered further down the page.
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={`${name} icon`}
+      width={size}
+      height={size}
+      loading={loading}
+      decoding="async"
+      className={`object-contain ${className}`}
+      style={{ width: size, height: size, minWidth: size, minHeight: size }}
+      onError={(e) => {
+        e.currentTarget.style.display = "none"
+      }}
+    />
+  )
+}
+
+// Dashboard icons that need a light variant on dark backgrounds render both
+// variants and let the `.dark` class pick one. The server HTML is therefore
+// already correct for the active theme: no theme subscription, no src swap
+// (and no icon flicker) after hydration or on theme toggle.
 function DashboardIconRenderer({
   slug,
   name,
@@ -30,31 +65,37 @@ function DashboardIconRenderer({
   className?: string
   loading?: "lazy" | "eager"
 }) {
-  const { resolvedTheme } = useTheme()
-  const shouldUseLightVariant =
-    resolvedTheme === "dark" && DASHBOARD_LIGHT_VARIANTS.has(slug)
-  const dashboardSlug = shouldUseLightVariant ? `${slug}-light` : slug
-  const dashboardUrl = `/icons/dashboard/${dashboardSlug}.svg`
-  const fallbackUrl = `/icons/dashboard/${slug}.svg`
+  const baseUrl = `/icons/dashboard/${slug}.svg`
+
+  if (!DASHBOARD_LIGHT_VARIANTS.has(slug)) {
+    return (
+      <DashboardImg
+        src={baseUrl}
+        name={name}
+        size={size}
+        className={`inline-block ${className}`}
+        loading={loading}
+      />
+    )
+  }
 
   return (
-    <Image
-      src={dashboardUrl}
-      alt={`${name} icon`}
-      width={size}
-      height={size}
-      loading={loading}
-      className={`inline-block object-contain ${className}`}
-      style={{ width: size, height: size, minWidth: size, minHeight: size }}
-      suppressHydrationWarning
-      onError={(e) => {
-        if (shouldUseLightVariant && e.currentTarget.src === dashboardUrl) {
-          e.currentTarget.src = fallbackUrl
-        } else {
-          e.currentTarget.style.display = "none"
-        }
-      }}
-    />
+    <>
+      <DashboardImg
+        src={baseUrl}
+        name={name}
+        size={size}
+        className={`inline-block dark:hidden ${className}`}
+        loading={loading}
+      />
+      <DashboardImg
+        src={`/icons/dashboard/${slug}-light.svg`}
+        name={name}
+        size={size}
+        className={`hidden dark:inline-block ${className}`}
+        loading={loading}
+      />
+    </>
   )
 }
 

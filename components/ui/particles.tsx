@@ -76,26 +76,29 @@ export const Particles: React.FC<ParticlesProps> = ({
   )
   const rafID = useRef<number | null>(null)
   const resizeTimeout = useRef<NodeJS.Timeout | null>(null)
+  // Color lives in a ref so a theme change recolors the *existing* particles on
+  // the next frame instead of tearing the canvas down and fading 100 new ones in.
   const rgb = useMemo(() => hexToRgb(color), [color])
+  const rgbRef = useRef(rgb)
+  useEffect(() => {
+    rgbRef.current = rgb
+  }, [rgb])
 
-  const drawCircle = useCallback(
-    (circle: Circle, update = false) => {
-      if (context.current) {
-        const { x, y, translateX, translateY, size, alpha } = circle
-        context.current.translate(translateX, translateY)
-        context.current.beginPath()
-        context.current.arc(x, y, size, 0, 2 * Math.PI)
-        context.current.fillStyle = `rgba(${rgb.join(", ")}, ${alpha})`
-        context.current.fill()
-        context.current.setTransform(dpr.current, 0, 0, dpr.current, 0, 0)
+  const drawCircle = useCallback((circle: Circle, update = false) => {
+    if (context.current) {
+      const { x, y, translateX, translateY, size, alpha } = circle
+      context.current.translate(translateX, translateY)
+      context.current.beginPath()
+      context.current.arc(x, y, size, 0, 2 * Math.PI)
+      context.current.fillStyle = `rgba(${rgbRef.current.join(", ")}, ${alpha})`
+      context.current.fill()
+      context.current.setTransform(dpr.current, 0, 0, dpr.current, 0, 0)
 
-        if (!update) {
-          circles.current.push(circle)
-        }
+      if (!update) {
+        circles.current.push(circle)
       }
-    },
-    [rgb]
-  )
+    }
+  }, [])
 
   const circleParams = useCallback((): Circle => {
     const x = Math.floor(Math.random() * canvasSize.current.w)
@@ -122,25 +125,57 @@ export const Particles: React.FC<ParticlesProps> = ({
     }
   }, [size])
 
-  const resizeCanvas = useCallback(() => {
-    if (canvasContainerRef.current && canvasRef.current && context.current) {
-      canvasSize.current.w = canvasContainerRef.current.offsetWidth
-      canvasSize.current.h = canvasContainerRef.current.offsetHeight
+  const resizeCanvas = useCallback(
+    (preserveParticles = false) => {
+      if (!canvasContainerRef.current || !canvasRef.current || !context.current)
+        return
 
-      canvasRef.current.width = canvasSize.current.w * dpr.current
-      canvasRef.current.height = canvasSize.current.h * dpr.current
-      canvasRef.current.style.width = `${canvasSize.current.w}px`
-      canvasRef.current.style.height = `${canvasSize.current.h}px`
+      const w = canvasContainerRef.current.offsetWidth
+      const h = canvasContainerRef.current.offsetHeight
+      const sizeChanged =
+        w !== canvasSize.current.w || h !== canvasSize.current.h
+      if (preserveParticles && !sizeChanged && circles.current.length > 0)
+        return
+
+      canvasSize.current.w = w
+      canvasSize.current.h = h
+
+      // Assigning width/height clears the bitmap and resets the transform.
+      canvasRef.current.width = w * dpr.current
+      canvasRef.current.height = h * dpr.current
+      canvasRef.current.style.width = `${w}px`
+      canvasRef.current.style.height = `${h}px`
       context.current.scale(dpr.current, dpr.current)
 
-      // Clear existing particles and create new ones with exact quantity
+      if (preserveParticles && circles.current.length > 0) {
+        // Keep the field stable across viewport changes (window resize, mobile
+        // URL bar collapse): only particles that fell outside the new bounds
+        // get a fresh position, everything else keeps its alpha and momentum.
+        circles.current.forEach((circle) => {
+          const outside =
+            circle.x + circle.translateX < 0 ||
+            circle.x + circle.translateX > w ||
+            circle.y + circle.translateY < 0 ||
+            circle.y + circle.translateY > h
+          if (outside) {
+            const fresh = circleParams()
+            circle.x = fresh.x
+            circle.y = fresh.y
+            circle.translateX = 0
+            circle.translateY = 0
+          }
+        })
+        return
+      }
+
+      // Fresh start: clear existing particles and create exactly `quantity`
       circles.current = []
       for (let i = 0; i < quantity; i++) {
-        const circle = circleParams()
-        drawCircle(circle)
+        drawCircle(circleParams())
       }
-    }
-  }, [circleParams, drawCircle, quantity])
+    },
+    [circleParams, drawCircle, quantity]
+  )
 
   const clearContext = useCallback(() => {
     if (context.current) {
@@ -153,19 +188,9 @@ export const Particles: React.FC<ParticlesProps> = ({
     }
   }, [])
 
-  const drawParticles = useCallback(() => {
-    clearContext()
-    const particleCount = quantity
-    for (let i = 0; i < particleCount; i++) {
-      const circle = circleParams()
-      drawCircle(circle)
-    }
-  }, [circleParams, clearContext, drawCircle, quantity])
-
   const initCanvas = useCallback(() => {
-    resizeCanvas()
-    drawParticles()
-  }, [drawParticles, resizeCanvas])
+    resizeCanvas(false)
+  }, [resizeCanvas])
 
   function remapValue(
     value: number,
@@ -251,8 +276,8 @@ export const Particles: React.FC<ParticlesProps> = ({
         clearTimeout(resizeTimeout.current)
       }
       resizeTimeout.current = setTimeout(() => {
-        initCanvas()
-      }, 200)
+        resizeCanvas(true)
+      }, 150)
     }
 
     // Update mouse ref directly in the event handler — no setState, no re-render
@@ -282,9 +307,16 @@ export const Particles: React.FC<ParticlesProps> = ({
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("resize", handleResize)
     }
-  }, [animate, initCanvas])
+  }, [animate, initCanvas, resizeCanvas])
 
+  // `refresh` is an explicit "regenerate the field" signal; skip the mount run
+  // since the effect above already initialised the canvas.
+  const isFirstRefresh = useRef(true)
   useEffect(() => {
+    if (isFirstRefresh.current) {
+      isFirstRefresh.current = false
+      return
+    }
     initCanvas()
   }, [initCanvas, refresh])
 

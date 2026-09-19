@@ -7,7 +7,7 @@ export function Work() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <section id="work" className="min-h-screen py-16 sm:py-32 opacity-0">
+    <section id="work" className="min-h-screen py-16 sm:py-32">
       <div className="space-y-12 sm:space-y-16">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <h2 className="text-3xl sm:text-4xl font-light">Selected Work</h2>

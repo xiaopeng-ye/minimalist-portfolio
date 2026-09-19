@@ -26,7 +26,7 @@ export function Thoughts() {
   }
 
   return (
-    <section id="thoughts" className="min-h-screen py-16 sm:py-32 opacity-0">
+    <section id="thoughts" className="min-h-screen py-16 sm:py-32">
       <div className="space-y-12 sm:space-y-16">
         <h2 className="text-3xl sm:text-4xl font-light">Recent Thoughts</h2>
 

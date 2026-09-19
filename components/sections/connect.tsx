@@ -10,7 +10,7 @@ export function Connect() {
   const haptic = useWebHaptics()
 
   return (
-    <section id="connect" className="py-16 sm:py-32 opacity-0">
+    <section id="connect" className="py-16 sm:py-32">
       <div className="grid lg:grid-cols-2 gap-12 sm:gap-16">
         <div className="space-y-6 sm:space-y-8">
           <h2 className="text-3xl sm:text-4xl font-light">

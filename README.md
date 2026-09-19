@@ -18,7 +18,7 @@ It is designed for developers who want a fast, personal site with polished motio
 - React 19
 - TypeScript
 - Tailwind CSS 4
-- `next-themes` for theme management
+- `@wrksz/themes` for theme management
 - `motion` for UI animation
 - `web-haptics` for tactile feedback on supported devices
 - Lucide React and Simple Icons
@@ -81,7 +81,7 @@ You can also adjust layout and presentation here:
 
 ## Features Worth Noting
 
-- Theme switching uses `next-themes` with an animated transition
+- Theme switching uses `@wrksz/themes` with an animated View Transitions reveal
 - Scroll tracking updates navigation state as sections enter view
 - Metadata, manifest, and Open Graph assets are configured in `app/layout.tsx` and `app/opengraph-image.tsx`
 - The portfolio content is statically embedded at build time from `lib/portfolio-config.ts`

@@ -16,7 +16,8 @@ export function ScrollTrackerLayout({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (entry.target.id !== "intro") {
+            if (entry.target.classList.contains("opacity-0")) {
+              entry.target.classList.remove("opacity-0")
               entry.target.classList.add("animate-fade-in-up")
             }
             setActiveSection(entry.target.id)
@@ -30,7 +31,17 @@ export function ScrollTrackerLayout({
     const sections = document.querySelectorAll<HTMLElement>(
       "#intro, #work, #thoughts, #connect"
     )
-    sections.forEach((section) => observer.observe(section))
+    sections.forEach((section) => {
+      // Hide-for-reveal is applied here, not in the markup, so sections stay
+      // visible without JS and never flash in late after hydration when the
+      // page loads mid-scroll (e.g. reload with scroll restoration).
+      if (section.id !== "intro") {
+        const rect = section.getBoundingClientRect()
+        const inView = rect.top < window.innerHeight && rect.bottom > 0
+        if (!inView) section.classList.add("opacity-0")
+      }
+      observer.observe(section)
+    })
 
     return () => observer.disconnect()
   }, [])

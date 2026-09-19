@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Bind `dark:` utilities to the provider-managed `.dark` class instead of the
+   OS media query, so they follow the user-selected theme. */
+@custom-variant dark (&:is(.dark *));
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -168,4 +172,17 @@
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+/* Scoped to AnimatedThemeToggler — the toggler sets the data-attribute and the
+   variables only while a theme toggle is in flight, so other view transitions
+   (e.g. Next.js navigation) are unaffected. */
+html[data-magicui-theme-vt="active"]::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration);
+}
+
+/* Pin the collapsed clip-path until the JS animation takes over (Firefox
+   otherwise paints the new theme unclipped for a frame). */
+html[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  clip-path: var(--magicui-theme-vt-clip-from);
 }
